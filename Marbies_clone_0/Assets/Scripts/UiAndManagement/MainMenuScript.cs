@@ -20,11 +20,13 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     [SerializeField] GameObject OpenRoomItem;
 
 
-    private List<RoomInfo> cachedRoomList;
+    private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
     private string hostedRoomName = "";
+    public bool browsingMatches;
 
     private IEnumerator Start()
     {
+        Cursor.lockState = CursorLockMode.None;
         OpenLobbyJoinMenu();
         OpenMainMenu();
         yield return null;
@@ -49,6 +51,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("running");
         base.OnRoomListUpdate(roomList);
 
         if(cachedRoomList.Count <= 0)
@@ -90,14 +93,18 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
             Destroy(oldRoomItem);
         }
 
-        foreach(var room in cachedRoomList)
+        if(browsingMatches && cachedRoomList.Count > 0)
         {
-            GameObject roomItem = Instantiate(OpenRoomItem, transform.position, transform.rotation);
-            roomItem.transform.parent = MatchesContainer.transform;
+            foreach(var room in cachedRoomList)
+            {
+                GameObject roomItem = Instantiate(OpenRoomItem, transform.position, transform.rotation);
+                roomItem.transform.parent = MatchesContainer.transform;
 
-            roomItem.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Name;
-            roomItem.transform.GetChild(1).GetComponent<TMP_Text>().text = room.PlayerCount + "/16";
+                roomItem.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Name;
+                roomItem.transform.GetChild(1).GetComponent<TMP_Text>().text = room.PlayerCount + "/16";
+            }
         }
+        
     }
 
     public void ChangeHostedGameName(string newName)
@@ -107,6 +114,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
+        if(hostedRoomName == "")
+            hostedRoomName = "room" + Random.Range(0, 1000);
+        
         PlayerPrefs.SetString("roomToJoinOrCreate", hostedRoomName);
 
         SceneManager.LoadScene("MarbleScene");
@@ -141,8 +151,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     public void OpenLobbyJoinMenu()
     {
         MatchesContainer.transform.GetChild(0).gameObject.SetActive(false);
-        var roomItem = Instantiate(OpenRoomItem, transform.position, transform.rotation);
-        roomItem.transform.SetParent(MatchesContainer.transform);
+        browsingMatches = true;
+
+        UpdateRoomList();
     }
 
     public void OpenHostingMenu()
@@ -155,6 +166,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         }
 
         MatchesContainer.transform.GetChild(0).gameObject.SetActive(true);
+        browsingMatches = false;
     }
 #endregion MenuNavigation
 }
