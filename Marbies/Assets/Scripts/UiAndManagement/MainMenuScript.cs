@@ -9,6 +9,8 @@ using TMPro;
 
 public class MainMenuScript : MonoBehaviourPunCallbacks
 {
+    public static MainMenuScript Instance;
+    
     [SerializeField] UIGradient backgroundGradient;
     [SerializeField] Color darkColor;
     [SerializeField] Color middleColor;
@@ -26,6 +28,11 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 
     private IEnumerator Start()
     {
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         Cursor.lockState = CursorLockMode.None;
         OpenLobbyJoinMenu();
         OpenMainMenu();
@@ -100,6 +107,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
                 GameObject roomItem = Instantiate(OpenRoomItem, transform.position, transform.rotation);
                 roomItem.transform.parent = MatchesContainer.transform;
 
+                roomItem.GetComponent<RoomItemScript>().roomToJoin = room.Name;
                 roomItem.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Name;
                 roomItem.transform.GetChild(1).GetComponent<TMP_Text>().text = room.PlayerCount + "/16";
             }
@@ -110,6 +118,13 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     public void ChangeHostedGameName(string newName)
     {
         hostedRoomName = newName;
+    }
+
+    public void JoinRoom(string roomToJoin)
+    {
+        PlayerPrefs.SetString("roomToJoinOrCreate", roomToJoin);
+
+        SceneManager.LoadScene("MarbleScene");
     }
 
     public void CreateRoom()

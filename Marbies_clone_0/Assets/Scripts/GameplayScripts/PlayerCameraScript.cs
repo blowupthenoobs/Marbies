@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerCameraScript : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
-    [SerializeField] GameObject player;
+    [SerializeField] public GameObject player;
     [SerializeField] float followDist;
     [SerializeField] float viewHeight;
     [SerializeField] float sensitivity;
@@ -32,7 +32,8 @@ public class PlayerCameraScript : MonoBehaviour
 
         var displacement = new Vector3(-Mathf.Cos((90-rot.y) * Mathf.Deg2Rad), viewHeight, -Mathf.Sin((90-rot.y) * Mathf.Deg2Rad)) * followDist;
 
-        transform.position = player.transform.position + displacement;
+        if(player != null)
+            transform.position = player.transform.position + displacement;
 
         playerID.yRotation = rot.y;
     }

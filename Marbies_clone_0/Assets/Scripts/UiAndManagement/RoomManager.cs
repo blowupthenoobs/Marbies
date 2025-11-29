@@ -8,6 +8,12 @@ using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] GameObject marbiePrefab;
+    [SerializeField] GameObject PlayerCamera;
+    [SerializeField] PlayerID playerID;
+
+    [SerializeField] Transform[] spawnPoints;
+
     private void Awake()
     {
         if(!PhotonNetwork.IsConnectedAndReady)
@@ -18,9 +24,24 @@ public class RoomManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
     }
 
+    private void SetNickName()
+    {
+        PhotonNetwork.LocalPlayer.NickName = "put name here";
+    }
+
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        
+        SpawnPlayer();
     }
+
+    public void SpawnPlayer()
+    {
+        Vector3 spawnPos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+
+        GameObject player = PhotonNetwork.Instantiate(marbiePrefab.name, spawnPos, Quaternion.identity);
+        player.GetComponent<PlayerMarbleScript>().GetPlayerData(playerID);
+        PlayerCamera.GetComponent<PlayerCameraScript>().player = player;
+    }
+
 }
