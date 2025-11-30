@@ -24,6 +24,7 @@ public class PlayerMarbleScript : MonoBehaviour
     {
         playerID = newData;
         PhotonView.Get(this).RPC("SpawnNameTag", RpcTarget.OthersBuffered);
+        PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, Random.Range(0, RoomManager.Instance.defaultMaterialList.Length));
     }
 
     // Update is called once per frame
@@ -52,6 +53,13 @@ public class PlayerMarbleScript : MonoBehaviour
     }
 
     [PunRPC]
+    public void SetMarbleMaterial(int index)
+    {
+        Debug.Log(index);
+        gameObject.GetComponent<Renderer>().material = RoomManager.Instance.defaultMaterialList[index];
+    }
+
+    [PunRPC]
     public void GetCollisionForce(Vector3 impactForce)
     {
         rb.AddForce(impactForce, ForceMode.VelocityChange);
@@ -61,16 +69,5 @@ public class PlayerMarbleScript : MonoBehaviour
     {
         if(collision.gameObject.GetComponent<PlayerMarbleScript>() != null && playerID != null)
             collision.gameObject.GetComponent<PhotonView>().RPC("GetCollisionForce", RpcTarget.All, rb.velocity);
-    }
-
-    
-    protected void OnEnable()
-    {
-        inputs.FindActionMap("MarbleControls").Enable();
-    }
-
-    protected void DisableInputSystem()
-    {
-        inputs.FindActionMap("MarbleControls").Disable();
     }
 }

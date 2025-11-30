@@ -271,6 +271,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a73fcb9bbcb3ae4e9818397bf7fc907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaterialList:
+  - {fileID: 2100000, guid: f4c0516024147b844a04003067dc4ab7, type: 2}
+  - {fileID: 2100000, guid: 6cfb573e3df613443bb8c508f72e585b, type: 2}
+  - {fileID: 2100000, guid: 9f9a4232380080c4ea61bc924a5a5a6f, type: 2}
+  - {fileID: 2100000, guid: 3ddb75af78556f14db541590cf097a77, type: 2}
   marbiePrefab: {fileID: 9099488044139965307, guid: 390c9bb9d6c03d24bb652823ca153ce4, type: 3}
   PlayerCamera: {fileID: 963194225}
   playerID: {fileID: 11400000, guid: e2a92b5a829d35047abde666e95b90b3, type: 2}
@@ -280,6 +285,7 @@ MonoBehaviour:
   - {fileID: 1698583401}
   - {fileID: 1155159693}
   - {fileID: 157312729}
+  inputs: {fileID: -944628639613478452, guid: ff1b4385aa1f0024f97aa708798b118b, type: 3}
 --- !u!4 &379276902
 Transform:
   m_ObjectHideFlags: 0
