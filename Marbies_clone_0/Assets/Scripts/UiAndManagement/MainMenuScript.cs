@@ -33,6 +33,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         else
             Destroy(gameObject);
 
+        // if(NetworkingManagerScript.Instance != null)
+        //     Destroy(NetworkingManagerScript.Instance.gameObject);
+
         Cursor.lockState = CursorLockMode.None;
         OpenLobbyJoinMenu();
         OpenMainMenu();
@@ -43,6 +46,8 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.Disconnect();
         }
+
+        LobbyManagerScript.ConnectedToLobby = false;
 
         yield return new WaitUntil(() => !PhotonNetwork.IsConnected);
 
@@ -122,9 +127,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 
     public void JoinRoom(string roomToJoin)
     {
-        PlayerPrefs.SetString("roomToJoinOrCreate", roomToJoin);
+        LobbyManagerScript.roomToJoin = roomToJoin;
 
-        SceneManager.LoadScene("MarbleScene");
+        NetworkingManagerScript.OpenScene("LobbyScene");
     }
 
     public void CreateRoom()
@@ -132,9 +137,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         if(hostedRoomName == "")
             hostedRoomName = "room" + Random.Range(0, 1000);
         
-        PlayerPrefs.SetString("roomToJoinOrCreate", hostedRoomName);
+        LobbyManagerScript.roomToJoin =  hostedRoomName;
 
-        SceneManager.LoadScene("MarbleScene");
+        NetworkingManagerScript.OpenScene("LobbyScene");
     }
 
 

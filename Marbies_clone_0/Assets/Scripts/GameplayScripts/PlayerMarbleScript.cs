@@ -24,7 +24,7 @@ public class PlayerMarbleScript : MonoBehaviour
     {
         playerID = newData;
         PhotonView.Get(this).RPC("SpawnNameTag", RpcTarget.OthersBuffered);
-        PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, Random.Range(0, RoomManager.Instance.defaultMaterialList.Length));
+        PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length));
     }
 
     // Update is called once per frame
@@ -55,8 +55,7 @@ public class PlayerMarbleScript : MonoBehaviour
     [PunRPC]
     public void SetMarbleMaterial(int index)
     {
-        Debug.Log(index);
-        gameObject.GetComponent<Renderer>().material = RoomManager.Instance.defaultMaterialList[index];
+        gameObject.GetComponent<Renderer>().material = RoomManagerScript.Instance.defaultMaterialList[index];
     }
 
     [PunRPC]

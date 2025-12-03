@@ -42,6 +42,10 @@ MonoBehaviour:
   - SpawnNameTag
   - GetCollisionForce
   - SetMarbleMaterial
+  - RequestCurrentMapAndMode
+  - SyncMapsAndMode
+  - StartGame
+  - SignalJoin
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

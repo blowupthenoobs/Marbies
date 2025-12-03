@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 
-public class RoomManager : MonoBehaviourPunCallbacks
+public class RoomManagerScript : MonoBehaviourPunCallbacks
 {
-    public static RoomManager Instance;
+    public static RoomManagerScript Instance;
     public Material[] defaultMaterialList;
     [SerializeField] GameObject marbiePrefab;
     [SerializeField] GameObject PlayerCamera;
@@ -17,6 +17,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     [SerializeField] Transform[] spawnPoints;
     public InputActionAsset inputs;
+
 
     private void Awake()
     {
@@ -28,21 +29,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
         else
             Destroy(gameObject);
 
-        
-        string roomName = PlayerPrefs.GetString("roomToJoinOrCreate");
-
-        PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
+        // PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
+        NetworkingManagerScript.Instance.AllPlayersReady += SpawnPlayer;
+        PhotonView.Get(NetworkingManagerScript.Instance).RPC("SignalJoin", RpcTarget.AllBuffered);
     }
 
-    private void SetNickName()
-    {
-        PhotonNetwork.LocalPlayer.NickName = "put name here";
-    }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        SpawnPlayer();
     }
 
     public void SpawnPlayer()
