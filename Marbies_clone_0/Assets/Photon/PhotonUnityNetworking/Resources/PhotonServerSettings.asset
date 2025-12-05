@@ -46,6 +46,9 @@ MonoBehaviour:
   - SyncMapsAndMode
   - StartGame
   - SignalJoin
+  - SyncJoinedPlayerCount
+  - OnAllPlayersReady
+  - AllClientPickUpEffect
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

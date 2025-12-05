@@ -18,6 +18,12 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     [SerializeField] Transform[] spawnPoints;
     public InputActionAsset inputs;
 
+    private bool isHost;
+
+    [SerializeField] GameObject pickableObject;
+
+    public float deathCutoffHeight;
+
 
     private void Awake()
     {
@@ -32,6 +38,17 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         // PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
         NetworkingManagerScript.Instance.AllPlayersReady += SpawnPlayer;
         PhotonView.Get(NetworkingManagerScript.Instance).RPC("SignalJoin", RpcTarget.AllBuffered);
+
+        isHost = LobbyManagerScript.isHost;
+
+        if(isHost)
+        {
+            Invoke("SpawnCollectables", 5);
+            Invoke("SpawnCollectables", 5);
+            Invoke("SpawnCollectables", 5);
+        }
+
+        playerID.materialIndex = Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length);
     }
 
 
@@ -47,6 +64,12 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         GameObject player = PhotonNetwork.Instantiate(marbiePrefab.name, spawnPos, Quaternion.identity);
         player.GetComponent<PlayerMarbleScript>().GetPlayerData(playerID);
         PlayerCamera.GetComponent<PlayerCameraScript>().player = player;
+    }
+
+    public void SpawnCollectables()
+    {
+        //using temp code atm
+        PhotonNetwork.Instantiate(pickableObject.name, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
     }
 
 

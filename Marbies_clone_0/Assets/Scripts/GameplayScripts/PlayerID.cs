@@ -6,4 +6,5 @@ using UnityEngine;
 public class PlayerID : ScriptableObject
 {
     public float yRotation;
+    public int materialIndex;
 }

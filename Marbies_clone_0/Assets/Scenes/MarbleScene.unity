@@ -287,6 +287,8 @@ MonoBehaviour:
   - {fileID: 1155159693}
   - {fileID: 157312729}
   inputs: {fileID: -944628639613478452, guid: ff1b4385aa1f0024f97aa708798b118b, type: 3}
+  pickableObject: {fileID: 844191936430484029, guid: abca8705a07f8fc4b88ab98d13110733, type: 3}
+  deathCutoffHeight: -12
 --- !u!4 &379276902
 Transform:
   m_ObjectHideFlags: 0
@@ -716,6 +718,9 @@ MonoBehaviour:
   followDist: 2.62
   viewHeight: 1
   sensitivity: 1
+  maxRotX: 40
+  minRotX: 20
+  cameraCutoffHeight: -5
 --- !u!1 &987794761
 GameObject:
   m_ObjectHideFlags: 0

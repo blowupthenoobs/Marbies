@@ -10,7 +10,7 @@ public static class FolderIconEditor
         SetFolderIcon("Assets/Scripts/GameplayScripts", "Assets/Editor/PalThing.png");
         SetFolderIcon("Assets/Editor", "Assets/Editor/TerrierSwag.png");
         SetFolderIcon("Assets/Unity-UIGradient-master", "Assets/Editor/finDerp.png");
-        SetFolderIcon("Assets/ParrelSync", "Assets/Editor/BubbleGumOk.png");
+        SetFolderIcon("Assets/Resources", "Assets/Editor/BubbleGumOk.png");
         SetFolderIcon("Assets/Plugins", "Assets/Editor/SansDunk.png");
         SetFolderIcon("Assets/Prefabs", "Assets/Editor/Tryanno.png");
         SetFolderIcon("Assets/Scenes", "Assets/Editor/Spectating.png");
