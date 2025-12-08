@@ -8,7 +8,7 @@ using Photon.Pun;
 public class PlayerMarbleScript : MonoBehaviour
 {
     [SerializeField] GameObject NameTag;
-    [SerializeField] PlayerID playerID;
+    public PlayerID playerID;
     private Rigidbody rb;
     private Vector2 moveInputs;
     public InputActionAsset inputs;
@@ -25,6 +25,12 @@ public class PlayerMarbleScript : MonoBehaviour
         playerID = newData;
         PhotonView.Get(this).RPC("SpawnNameTag", RpcTarget.OthersBuffered);
         PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, playerID.materialIndex);
+    }
+
+    public void ScorePoints()
+    {
+        PhotonView.Get(RoomManagerScript.Instance).RPC("EditScore", RpcTarget.All, NetworkingManagerScript.Instance.playerIndex, 1);
+        Debug.Log("Gained Points");
     }
 
     // Update is called once per frame
@@ -51,8 +57,6 @@ public class PlayerMarbleScript : MonoBehaviour
         }
         else if(transform.position.y < RoomManagerScript.Instance.deathCutoffHeight)
             Destroy(gameObject);
-
-        
     }
 
     [PunRPC]

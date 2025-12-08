@@ -134,12 +134,14 @@ public class LobbyManagerScript : MonoBehaviourPunCallbacks
             {
                 button.SetActive(true);
             }
+            NetworkingManagerScript.Instance.playerIndex = 0;
         }
         else
         {
             isHost = false;
 
             PhotonView.Get(this).RPC("RequestCurrentMapAndMode", RpcTarget.Others);
+            PhotonView.Get(NetworkingManagerScript.Instance).RPC("RequestPlayerIndex", RpcTarget.Others);
         }
 
         ConnectedToLobby = true;

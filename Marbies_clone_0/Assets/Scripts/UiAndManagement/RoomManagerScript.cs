@@ -5,11 +5,14 @@ using UnityEngine.InputSystem;
 using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using System.Linq;
 
 
 public class RoomManagerScript : MonoBehaviourPunCallbacks
 {
     public static RoomManagerScript Instance;
+
+    //Basic player variables
     public Material[] defaultMaterialList;
     [SerializeField] GameObject marbiePrefab;
     [SerializeField] GameObject PlayerCamera;
@@ -20,10 +23,30 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
 
     private bool isHost;
 
+    //UI controls
+    [SerializeField] GameObject ScoresContainer;
+    [SerializeField] GameObject scoreTrackerPrefab;
+    private Dictionary<int, GameObject> scoreTracker = new Dictionary<int, GameObject>();
+
+    //Gameplay Stuff
     [SerializeField] GameObject pickableObject;
 
     public float deathCutoffHeight;
+    public Dictionary<int, int> playerScores = new Dictionary<int, int>();
 
+
+    // [System.Serializable] //Old idea, seeing if Dictionary by itself would work
+    // public struct PlayerScoreContainer
+    // {
+    //     public int playerIndex;
+    //     public int score;
+
+    //     public PlayerScoreContainer(int playerIndex, int score)
+    //     {
+    //         this.playerIndex = playerIndex;
+    //         this.score = score;
+    //     }
+    // }
 
     private void Awake()
     {
@@ -49,8 +72,36 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         }
 
         playerID.materialIndex = Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length);
+
+        PhotonView.Get(this).RPC("AddScoreDictionaryEntry", RpcTarget.AllBuffered, NetworkingManagerScript.Instance.playerIndex, 0);
     }
 
+    [PunRPC]
+    public void AddScoreDictionaryEntry(int index, int startingScore)
+    {
+        playerScores.Add(index, startingScore);
+        scoreTracker.Add(index, Instantiate(scoreTrackerPrefab, transform.position, Quaternion.identity));
+        scoreTracker[index].transform.SetParent(ScoresContainer.transform);
+        scoreTracker[index].GetComponent<ScoreDisplayerScript>().Initialize(index, "temp", playerScores[index]);
+    }
+
+    [PunRPC]
+    public void EditScore(int index, int change)
+    {
+        playerScores[index] += change;
+        scoreTracker[index].GetComponent<ScoreDisplayerScript>().UpdateScores(playerScores[index]);
+    }
+
+    public void ReorderScoreTrackers()
+    {
+        var orderedKeys = playerScores.OrderByDescending(entry => entry.Key).ToList();
+
+        foreach(int key in orderedKeys)
+        {
+            
+        }
+        //transform.SetSeiblingIndex(num);
+    }
 
     public override void OnJoinedRoom()
     {

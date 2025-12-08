@@ -14,6 +14,8 @@ public class NetworkingManagerScript : MonoBehaviourPunCallbacks
     public static NetworkingManagerScript Instance;
     public UnityAction AllPlayersReady;
 
+    public int playerIndex = -1;
+    private List<int> otherPlayerIndexes = new List<int>();
     private int playersJoined;
     public string nickName = "put random string here";
     void Awake()
@@ -34,6 +36,29 @@ public class NetworkingManagerScript : MonoBehaviourPunCallbacks
 
         if(playersJoined == PhotonNetwork.CurrentRoom.PlayerCount)
             PhotonView.Get(this).RPC("OnAllPlayersReady", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void RequestPlayerIndex()
+    {
+        if(LobbyManagerScript.isHost)
+        {
+            for(int i = 1; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+            {
+                if(!otherPlayerIndexes.Contains(i))
+                {
+                    otherPlayerIndexes.Add(i);    
+                    PhotonView.Get(this).RPC("RecievePlayerIndex", RpcTarget.Others, i);
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    public void RecievePlayerIndex(int index)
+    {
+        if(playerIndex < 0)
+            playerIndex = index;
     }
 
     [PunRPC]

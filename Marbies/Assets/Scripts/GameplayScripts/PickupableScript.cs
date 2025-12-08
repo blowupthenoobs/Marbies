@@ -7,19 +7,19 @@ using Photon.Pun;
 public class PickupableScript : MonoBehaviour
 {
     [Header("Bobbing Variables")]
-    [SerializeField] float bobbingPower; //Amount of allowed vertical change
-    [SerializeField] float minBobSpeed;
-    [SerializeField] float maxBobSpeed;
-    private List<Vector3> movementPoints = new List<Vector3>();
-    private int movementIndex;
-    private float currentBobbingSpeed; //speed by which it goes up and down
-    private Collider hitbox;
+    [SerializeField] float bobbingPower = 0.1f; //Amount of allowed vertical change
+    [SerializeField] float minBobSpeed = 0.2f;
+    [SerializeField] float maxBobSpeed = 0.25f;
+    protected List<Vector3> movementPoints = new List<Vector3>();
+    protected int movementIndex;
+    protected float currentBobbingSpeed; //speed by which it goes up and down
+    protected Collider hitbox;
 
-    private GameObject Collector;
+    protected GameObject Collector;
 
     [Header("PickUp Anim Variables")]
     [SerializeField] float[] animSpeed;
-    [SerializeField] float pushDist;
+    [SerializeField] float pushDist = 2;
 
 
     void Awake()
@@ -48,7 +48,6 @@ public class PickupableScript : MonoBehaviour
         }
         else
         {
-            Debug.Log("running collection code");
             if(movementIndex != 1)
                 transform.position = Vector3.MoveTowards(transform.position, movementPoints[movementIndex] + Collector.transform.position, animSpeed[movementIndex] * Time.deltaTime);
             else
@@ -96,7 +95,7 @@ public class PickupableScript : MonoBehaviour
         Debug.Log("Play particles");
     }
 
-    private void PlayPickUpAnimation(GameObject claimer)
+    protected void PlayPickUpAnimation(GameObject claimer)
     {
         Collector = claimer;
         movementPoints.Clear();
@@ -116,7 +115,7 @@ public class PickupableScript : MonoBehaviour
         movementIndex = 0;
     }
 
-    private void OnTriggerEnter(Collider collision)
+    protected void OnTriggerEnter(Collider collision)
     {
         PlayPickUpAnimation(collision.gameObject);
         // Destroy(gameObject);
