@@ -58,7 +58,6 @@ public class PickupableScript : MonoBehaviour
 
                 //Use that to calculate current angle around player
                 var currentAngle = Mathf.Atan2(yDist, xDist);
-                // Debug.Log(currentAngle);
 
                 currentAngle = Mathf.MoveTowards(currentAngle, 90 * Mathf.Deg2Rad, animSpeed[movementIndex] * Time.deltaTime);
                 var newPos = new Vector3();
@@ -77,8 +76,6 @@ public class PickupableScript : MonoBehaviour
                 if(movementIndex == movementPoints.Count)
                     OnPickUpEffect();
             }
-            
-
         }
     }
 

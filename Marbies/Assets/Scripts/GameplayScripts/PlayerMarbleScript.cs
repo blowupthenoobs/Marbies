@@ -14,6 +14,8 @@ public class PlayerMarbleScript : MonoBehaviour
     public InputActionAsset inputs;
     private InputAction movementInputs;
 
+    private GameObject lastPlayerCollision;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,7 +32,7 @@ public class PlayerMarbleScript : MonoBehaviour
     public void ScorePoints()
     {
         PhotonView.Get(RoomManagerScript.Instance).RPC("EditScore", RpcTarget.All, NetworkingManagerScript.Instance.playerIndex, 1);
-        Debug.Log("Gained Points");
+        // Debug.Log("Gained Points");
     }
 
     // Update is called once per frame
@@ -51,6 +53,7 @@ public class PlayerMarbleScript : MonoBehaviour
 
             if(transform.position.y < RoomManagerScript.Instance.deathCutoffHeight)
             {
+                lastPlayerCollision?.GetComponent<PhotonView>().RPC("OnPlayerKill", RpcTarget.Others);
                 RoomManagerScript.Instance.SpawnPlayer();
                 Destroy(gameObject);
             }
@@ -72,6 +75,13 @@ public class PlayerMarbleScript : MonoBehaviour
     }
 
     [PunRPC]
+    public void OnPlayerKill()
+    {
+        if(playerID != null)
+            Debug.Log("KilledPlayer");
+    }
+
+    [PunRPC]
     public void GetCollisionForce(Vector3 impactForce)
     {
         rb.AddForce(impactForce, ForceMode.VelocityChange);
@@ -80,6 +90,15 @@ public class PlayerMarbleScript : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.GetComponent<PlayerMarbleScript>() != null && playerID != null)
+        {    
             collision.gameObject.GetComponent<PhotonView>().RPC("GetCollisionForce", RpcTarget.All, rb.velocity);
+            lastPlayerCollision = collision.gameObject;
+        }
+    }
+
+    private IEnumerator EndKillClaim()
+    {
+        yield return new WaitForSeconds(10f);
+        lastPlayerCollision = null;
     }
 }

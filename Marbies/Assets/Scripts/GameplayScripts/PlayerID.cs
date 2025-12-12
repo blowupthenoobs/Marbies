@@ -7,4 +7,5 @@ public class PlayerID : ScriptableObject
 {
     public float yRotation;
     public int materialIndex;
+    public string playerName;
 }

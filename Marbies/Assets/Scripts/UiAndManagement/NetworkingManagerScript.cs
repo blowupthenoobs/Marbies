@@ -32,7 +32,6 @@ public class NetworkingManagerScript : MonoBehaviourPunCallbacks
     public void SignalJoin()
     {
         playersJoined++;
-        Debug.Log(playersJoined);
 
         if(playersJoined == PhotonNetwork.CurrentRoom.PlayerCount)
             PhotonView.Get(this).RPC("OnAllPlayersReady", RpcTarget.All);

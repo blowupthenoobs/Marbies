@@ -63,7 +63,6 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("running");
         base.OnRoomListUpdate(roomList);
 
         if(cachedRoomList.Count <= 0)
