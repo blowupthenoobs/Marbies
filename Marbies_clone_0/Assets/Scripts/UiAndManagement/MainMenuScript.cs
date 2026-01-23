@@ -20,6 +20,10 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     [SerializeField] GameObject MatchMakingMenu;
     [SerializeField] GameObject MatchesContainer;
     [SerializeField] GameObject OpenRoomItem;
+    [SerializeField] GameObject SettingsMenu;
+    [SerializeField] GameObject CustomizationMenu;
+
+    [SerializeField] PlayerID playerID;
 
 
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
@@ -52,6 +56,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         yield return new WaitUntil(() => !PhotonNetwork.IsConnected);
 
         PhotonNetwork.ConnectUsingSettings();
+        playerID.SetUpAccount();
     }
 
     public override void OnConnectedToMaster()
@@ -146,6 +151,8 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     public void OpenMainMenu()
     {
         MatchMakingMenu.SetActive(false);
+        CustomizationMenu.SetActive(false);
+        SettingsMenu.SetActive(false);
 
         backgroundGradient.m_color1 = darkColor;
         backgroundGradient.m_color2 = lightColor;
@@ -186,6 +193,30 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 
         MatchesContainer.transform.GetChild(0).gameObject.SetActive(true);
         browsingMatches = false;
+    }
+
+    public void OpenCustomizationMenu()
+    {
+        MainMenu.SetActive(false);
+
+        backgroundGradient.m_color1 = lightColor;
+        backgroundGradient.m_color2 = lightColor;
+        backgroundGradient.gameObject.SetActive(false);
+        backgroundGradient.gameObject.SetActive(true);
+
+        CustomizationMenu.SetActive(true);
+    }
+
+    public void OpenSettingsMenu()
+    {
+        MainMenu.SetActive(false);
+
+        backgroundGradient.m_color1 = lightColor;
+        backgroundGradient.m_color2 = darkColor;
+        backgroundGradient.gameObject.SetActive(false);
+        backgroundGradient.gameObject.SetActive(true);
+
+        SettingsMenu.SetActive(true);
     }
 #endregion MenuNavigation
 }
