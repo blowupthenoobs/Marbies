@@ -13,3 +13,11 @@ MonoBehaviour:
   m_Name: Player1
   m_EditorClassIdentifier: 
   yRotation: 0
+  materialIndex: 3
+  player:
+    accountName: new account
+    settings:
+      masterVol: 0
+      musicVol: 0
+      sfxVol: 0
+    achievements: []

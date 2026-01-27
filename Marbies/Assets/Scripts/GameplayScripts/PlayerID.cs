@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "name4mePls/player")]
 public class PlayerID : ScriptableObject
 {
+    public static PlayerID Instance;
     //Gameplay tools
     public float yRotation;
 
 
     //Actually saved stuffs
     public int materialIndex;
-    public string playerName;
 
     public Account player;
 
@@ -19,6 +19,7 @@ public class PlayerID : ScriptableObject
     {
         if(player == null)
         {
+            Debug.Log("running");
             if(ES3.KeyExists("account"))
                 player = ES3.Load<Account>("account");
             else
@@ -28,6 +29,17 @@ public class PlayerID : ScriptableObject
             }
         }
         
+    }
+
+    public void SaveAccountInfo()
+    {
+        ES3.Save("account", player);
+    }
+
+    public void OnApplicationQuit()
+    {
+        ES3.Save("account", player);
+        player = null; //simply for the editor stuffs
     }
 
     [System.Serializable]

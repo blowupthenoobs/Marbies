@@ -23,7 +23,16 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     [SerializeField] GameObject SettingsMenu;
     [SerializeField] GameObject CustomizationMenu;
 
-    [SerializeField] PlayerID playerID;
+    //Decorations
+    [SerializeField] GameObject SpinnyCube;
+    [SerializeField] Transform[] SpinnyCubePos;
+    private int spinnyCubeIndex;
+
+    [SerializeField] GameObject PreviewMarbie;
+    [SerializeField] Transform[] PreviewMarbiePos;
+    private int previewMarbieIndex;
+
+    [SerializeField] float decorationMoveSpeed;
 
 
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
@@ -56,7 +65,8 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         yield return new WaitUntil(() => !PhotonNetwork.IsConnected);
 
         PhotonNetwork.ConnectUsingSettings();
-        playerID.SetUpAccount();
+        PlayerID.Instance = (PlayerID)ScriptableObject.CreateInstance(typeof(PlayerID));
+        PlayerID.Instance.SetUpAccount();
     }
 
     public override void OnConnectedToMaster()
@@ -159,6 +169,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         backgroundGradient.gameObject.SetActive(false);
         backgroundGradient.gameObject.SetActive(true);
 
+        spinnyCubeIndex = 0;
+        previewMarbieIndex = 0;
+
         MainMenu.SetActive(true);
     }
 
@@ -204,6 +217,9 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         backgroundGradient.gameObject.SetActive(false);
         backgroundGradient.gameObject.SetActive(true);
 
+        spinnyCubeIndex = 1;
+        previewMarbieIndex = 1;
+
         CustomizationMenu.SetActive(true);
     }
 
@@ -219,4 +235,20 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         SettingsMenu.SetActive(true);
     }
 #endregion MenuNavigation
+
+    void Update()
+    {
+        MoveDecorations();
+    }
+    
+    public void MoveDecorations()
+    {
+        SpinnyCube.transform.position = Vector3.MoveTowards(SpinnyCube.transform.position, SpinnyCubePos[spinnyCubeIndex].position, decorationMoveSpeed * Time.deltaTime);
+        PreviewMarbie.transform.position = Vector3.MoveTowards(PreviewMarbie.transform.position, PreviewMarbiePos[previewMarbieIndex].position, decorationMoveSpeed * Time.deltaTime);
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerID.Instance.OnApplicationQuit();
+    }
 }

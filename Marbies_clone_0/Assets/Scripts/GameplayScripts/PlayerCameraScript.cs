@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerCameraScript : MonoBehaviour
 {
-    [SerializeField] PlayerID playerID;
     [SerializeField] public GameObject player;
     [SerializeField] float followDist;
     [SerializeField] float viewHeight;
@@ -52,6 +51,6 @@ public class PlayerCameraScript : MonoBehaviour
             }   
         }
 
-        playerID.yRotation = rot.y;
+        PlayerID.Instance.yRotation = rot.y;
     }
 }
