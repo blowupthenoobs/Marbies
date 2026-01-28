@@ -11,6 +11,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 {
     public static MainMenuScript Instance;
     
+    public Material[] defaultMaterialList;
     [SerializeField] UIGradient backgroundGradient;
     [SerializeField] Color darkColor;
     [SerializeField] Color middleColor;
@@ -38,6 +39,10 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
     private string hostedRoomName = "";
     public bool browsingMatches;
+
+    //Customization variables
+    private string currentUsername;
+    private int currentMaterial;
 
     private IEnumerator Start()
     {
@@ -236,6 +241,24 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     }
 #endregion MenuNavigation
 
+#region CustomizationFunctions
+    public void ChangeUsername(string newName)
+    {
+        currentUsername = newName;
+    }
+
+    public void CycleMarbleStyle(int change)
+    {
+        currentMaterial = (currentMaterial + change + PlayerID.Instance.GetMaximumMaterialIndex()) % PlayerID.Instance.GetMaximumMaterialIndex();
+    }
+
+    public void LockInChanges()
+    {
+        PlayerID.Instance.player.accountName = currentUsername;
+        PlayerID.Instance.player.materialIndex = currentMaterial;    
+    }
+
+#endregion CustomizationFunctions
     void Update()
     {
         MoveDecorations();

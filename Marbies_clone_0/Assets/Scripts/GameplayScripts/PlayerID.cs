@@ -5,14 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "name4mePls/player")]
 public class PlayerID : ScriptableObject
 {
+    public Material[] defaultMaterialList;
     public static PlayerID Instance;
     //Gameplay tools
     public float yRotation;
 
 
     //Actually saved stuffs
-    public int materialIndex;
-
     public Account player;
 
     public void SetUpAccount()
@@ -29,6 +28,7 @@ public class PlayerID : ScriptableObject
             }
         }
         
+        defaultMaterialList = MainMenuScript.Instance.defaultMaterialList;
     }
 
     public void SaveAccountInfo()
@@ -46,15 +46,19 @@ public class PlayerID : ScriptableObject
     public class Account
     {
         public string accountName;
+        public int materialIndex;
         // public Stats stats;
         public Settings settings;
         public List<string> achievements;
+        public List<Material> importedImages;
 
-        public Account(string accountName, Settings settings, List<string> achievements)
+        public Account(string accountName, int materialIndex, Settings settings, List<string> achievements, List<Material> importedImages)
         {
             this.accountName = accountName;
+            this.materialIndex = materialIndex;
             this.settings = settings;
             this.achievements = achievements;
+            this.importedImages = importedImages;
         }
 
         public Account()
@@ -63,7 +67,21 @@ public class PlayerID : ScriptableObject
             // this.stats = new Stats();
             this.settings = new Settings();
             this.achievements = new List<string>();
+            this.importedImages = new List<Material>();
         }
+    }
+
+    public int GetMaximumMaterialIndex()
+    {
+        return (defaultMaterialList.Length + player.importedImages.Count);
+    }
+
+    public Material GetSelectedMaterial()
+    {
+        if(materialIndex > defaultMaterialList.Length)
+            return defaultMaterialList[materialIndex];
+        else
+            return player.importedImages[materialIndex - defaultMaterialList.Length];
     }
 
     

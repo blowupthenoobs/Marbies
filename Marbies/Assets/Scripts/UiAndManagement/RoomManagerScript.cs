@@ -64,7 +64,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
                 Invoke("SpawnCollectables", 5);
             }
 
-            playerID.materialIndex = UnityEngine.Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length);
+            // PlayerID.Instance.player.materialIndex = UnityEngine.Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length);
 
         }
 

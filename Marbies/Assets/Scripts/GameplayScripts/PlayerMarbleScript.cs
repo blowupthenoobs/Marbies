@@ -26,7 +26,7 @@ public class PlayerMarbleScript : MonoBehaviour
     {
         playerID = newData;
         PhotonView.Get(this).RPC("SpawnNameTag", RpcTarget.OthersBuffered);
-        PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, playerID.materialIndex);
+        PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, PlayerID.Instance.player.materialIndex);
     }
 
     public void ScorePoints()
