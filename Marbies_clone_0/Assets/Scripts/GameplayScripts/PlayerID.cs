@@ -16,6 +16,11 @@ public class PlayerID : ScriptableObject
 
     public void SetUpAccount()
     {
+        // if(Instance == null)
+        //     Instance = this;
+        // else
+        //     Destroy(this);
+        
         if(player == null)
         {
             Debug.Log("running");
@@ -78,10 +83,10 @@ public class PlayerID : ScriptableObject
 
     public Material GetSelectedMaterial()
     {
-        if(materialIndex > defaultMaterialList.Length)
-            return defaultMaterialList[materialIndex];
+        if(player.materialIndex > defaultMaterialList.Length)
+            return defaultMaterialList[player.materialIndex];
         else
-            return player.importedImages[materialIndex - defaultMaterialList.Length];
+            return player.importedImages[player.materialIndex - defaultMaterialList.Length];
     }
 
     

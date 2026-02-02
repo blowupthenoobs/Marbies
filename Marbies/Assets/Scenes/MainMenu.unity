@@ -1779,7 +1779,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1717595949}
         m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
-        m_MethodName: OpenMainMenu
+        m_MethodName: LockInChanges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3723,7 +3723,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1717595949}
+        m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
+        m_MethodName: ChangeUsername
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4304,6 +4316,50 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1427848803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1427848805}
+  - component: {fileID: 1427848804}
+  m_Layer: 0
+  m_Name: ObjectPreserver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1427848804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427848803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad39a6b946fecb543ab81974c8f77f32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1427848805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427848803}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.69053, y: 6.730342, z: -2.899838}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1485813820
 GameObject:
   m_ObjectHideFlags: 0
@@ -4892,6 +4948,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e58fac8f25ec9947b842e54ff17bfda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaterialList:
+  - {fileID: 2100000, guid: f4c0516024147b844a04003067dc4ab7, type: 2}
+  - {fileID: 2100000, guid: 6cfb573e3df613443bb8c508f72e585b, type: 2}
+  - {fileID: 2100000, guid: 9f9a4232380080c4ea61bc924a5a5a6f, type: 2}
+  - {fileID: 2100000, guid: 47d6fda12b62b374c969bd20ef7dc5a3, type: 2}
   backgroundGradient: {fileID: 1032748389}
   darkColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
   middleColor: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 0.7058824}
@@ -4902,6 +4963,7 @@ MonoBehaviour:
   OpenRoomItem: {fileID: 7754863868591861955, guid: 54441eafd43b796438dbe177200c3ef0, type: 3}
   SettingsMenu: {fileID: 1485813820}
   CustomizationMenu: {fileID: 857883261}
+  UsernameBox: {fileID: 1167137841}
   SpinnyCube: {fileID: 1407495677}
   SpinnyCubePos:
   - {fileID: 280214158}
@@ -5952,3 +6014,4 @@ SceneRoots:
   - {fileID: 2059145852}
   - {fileID: 1717595948}
   - {fileID: 729113138}
+  - {fileID: 1427848805}

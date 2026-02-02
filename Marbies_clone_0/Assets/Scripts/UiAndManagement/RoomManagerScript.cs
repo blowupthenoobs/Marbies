@@ -123,7 +123,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         Vector3 spawnPos = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position;
 
         GameObject player = PhotonNetwork.Instantiate(marbiePrefab.name, spawnPos, Quaternion.identity);
-        player.GetComponent<PlayerMarbleScript>().GetPlayerData(playerID);
+        player.GetComponent<PlayerMarbleScript>().GetPlayerData(PlayerID.Instance);
         PlayerCamera.GetComponent<PlayerCameraScript>().player = player;
     }
 

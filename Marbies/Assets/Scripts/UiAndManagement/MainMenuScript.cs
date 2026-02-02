@@ -23,6 +23,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     [SerializeField] GameObject OpenRoomItem;
     [SerializeField] GameObject SettingsMenu;
     [SerializeField] GameObject CustomizationMenu;
+    [SerializeField] TMP_InputField UsernameBox;
 
     //Decorations
     [SerializeField] GameObject SpinnyCube;
@@ -70,7 +71,6 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         yield return new WaitUntil(() => !PhotonNetwork.IsConnected);
 
         PhotonNetwork.ConnectUsingSettings();
-        PlayerID.Instance = (PlayerID)ScriptableObject.CreateInstance(typeof(PlayerID));
         PlayerID.Instance.SetUpAccount();
     }
 
@@ -226,6 +226,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
         previewMarbieIndex = 1;
 
         CustomizationMenu.SetActive(true);
+        LoadCurrentCustomizationValues();
     }
 
     public void OpenSettingsMenu()
@@ -242,6 +243,11 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
 #endregion MenuNavigation
 
 #region CustomizationFunctions
+    private void LoadCurrentCustomizationValues()
+    {
+        UsernameBox.text = PlayerID.Instance.player.accountName;
+    }
+
     public void ChangeUsername(string newName)
     {
         currentUsername = newName;
@@ -268,10 +274,5 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     {
         SpinnyCube.transform.position = Vector3.MoveTowards(SpinnyCube.transform.position, SpinnyCubePos[spinnyCubeIndex].position, decorationMoveSpeed * Time.deltaTime);
         PreviewMarbie.transform.position = Vector3.MoveTowards(PreviewMarbie.transform.position, PreviewMarbiePos[previewMarbieIndex].position, decorationMoveSpeed * Time.deltaTime);
-    }
-
-    private void OnApplicationQuit()
-    {
-        PlayerID.Instance.OnApplicationQuit();
     }
 }
