@@ -25,7 +25,7 @@ public class PlayerMarbleScript : MonoBehaviour
     public void GetPlayerData(PlayerID newData)
     {
         playerID = newData;
-        PhotonView.Get(this).RPC("SpawnNameTag", RpcTarget.OthersBuffered);
+        PhotonView.Get(this).RPC("SpawnNameTag", RpcTarget.OthersBuffered, playerID.player.accountName);
         PhotonView.Get(this).RPC("SetMarbleMaterial", RpcTarget.AllBuffered, PlayerID.Instance.player.materialIndex);
     }
 
@@ -63,9 +63,11 @@ public class PlayerMarbleScript : MonoBehaviour
     }
 
     [PunRPC]
-    public void SpawnNameTag()
+    public void SpawnNameTag(string name)
     {
-        Instantiate(NameTag, transform.position, Quaternion.identity).GetComponent<NametagHoverScript>().target = gameObject;
+        var tag = Instantiate(NameTag, transform.position, Quaternion.identity);
+        tag.GetComponent<NametagHoverScript>().target = gameObject;
+        tag.GetComponent<NametagHoverScript>().ChangeNametag(name);
     }
 
     [PunRPC]

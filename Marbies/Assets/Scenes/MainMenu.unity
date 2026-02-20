@@ -721,9 +721,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LobbyManagerScript, Assembly-CSharp
-        m_MethodName: ChangeMap
+      - m_Target: {fileID: 1717595949}
+        m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
+        m_MethodName: CycleMarbleStyle
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2756,9 +2756,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LobbyManagerScript, Assembly-CSharp
-        m_MethodName: ChangeMap
+      - m_Target: {fileID: 1717595949}
+        m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
+        m_MethodName: CycleMarbleStyle
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4345,6 +4345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad39a6b946fecb543ab81974c8f77f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  temp: {fileID: 0}
 --- !u!4 &1427848805
 Transform:
   m_ObjectHideFlags: 0
@@ -5773,6 +5774,7 @@ GameObject:
   - component: {fileID: 2059145851}
   - component: {fileID: 2059145850}
   - component: {fileID: 2059145849}
+  - component: {fileID: 2059145853}
   m_Layer: 0
   m_Name: PreviewMarbie
   m_TagString: Untagged
@@ -5866,6 +5868,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2059145853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059145848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c16d38d0cdd1b42afdda62c58b472a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2066602440
 GameObject:
   m_ObjectHideFlags: 0

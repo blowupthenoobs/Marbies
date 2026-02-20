@@ -246,6 +246,8 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     private void LoadCurrentCustomizationValues()
     {
         UsernameBox.text = PlayerID.Instance.player.accountName;
+        currentMaterial = PlayerID.Instance.player.materialIndex;
+        PreviewMarbie.GetComponent<MarbiePreviewScript>().ChangeMarbieMaterial(PlayerID.Instance.GetMaterialByIndex(currentMaterial));
     }
 
     public void ChangeUsername(string newName)
@@ -256,6 +258,7 @@ public class MainMenuScript : MonoBehaviourPunCallbacks
     public void CycleMarbleStyle(int change)
     {
         currentMaterial = (currentMaterial + change + PlayerID.Instance.GetMaximumMaterialIndex()) % PlayerID.Instance.GetMaximumMaterialIndex();
+        PreviewMarbie.GetComponent<MarbiePreviewScript>().ChangeMarbieMaterial(PlayerID.Instance.GetMaterialByIndex(currentMaterial));
     }
 
     public void LockInChanges()

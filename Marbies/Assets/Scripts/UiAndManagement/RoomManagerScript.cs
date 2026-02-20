@@ -25,6 +25,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     public InputActionAsset inputs;
 
     private bool isHost;
+    private List<string> usedNames = new List<string>();
 
     //UI controls
     [SerializeField] GameObject ScoresContainer;
@@ -52,7 +53,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
 
             // PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
             NetworkingManagerScript.Instance.AllPlayersReady += SpawnPlayer;
-            NetworkingManagerScript.Instance.AllPlayersReady += () => PhotonView.Get(this).RPC("AddScoreDictionaryEntry", RpcTarget.AllBuffered, NetworkingManagerScript.Instance.playerIndex, "temp" + NetworkingManagerScript.Instance.playerIndex, 0);
+            NetworkingManagerScript.Instance.AllPlayersReady += () => PhotonView.Get(this).RPC("AddScoreDictionaryEntry", RpcTarget.AllBuffered, NetworkingManagerScript.Instance.playerIndex, GetUniqueUsername(), 0);
             PhotonView.Get(NetworkingManagerScript.Instance).RPC("SignalJoin", RpcTarget.AllBuffered);
 
             isHost = LobbyManagerScript.isHost;
@@ -90,6 +91,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         scoreTracker.Add(index, Instantiate(scoreTrackerPrefab, transform.position, Quaternion.identity));
         scoreTracker[index].transform.SetParent(ScoresContainer.transform);
         scoreTracker[index].GetComponent<ScoreDisplayerScript>().Initialize(index, name, playerScores[index]);
+        usedNames.Add(name);
     }
 
     [PunRPC]
@@ -131,6 +133,25 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     {
         //using temp code atm
         PhotonNetwork.Instantiate(pickableObject.name, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+    }
+
+    private string GetUniqueUsername()
+    {
+        var originalName = PlayerID.Instance.player.accountName;
+        if(!usedNames.Contains(originalName))
+            return originalName;
+        else
+        {
+            int num = -1;
+            var modifiedName = originalName;
+            while(usedNames.Contains(modifiedName))
+            {
+                num++;
+                modifiedName = originalName + " (" + num.ToString() + ")";
+            }
+
+            return modifiedName;
+        }
     }
 
 

@@ -83,10 +83,18 @@ public class PlayerID : ScriptableObject
 
     public Material GetSelectedMaterial()
     {
-        if(player.materialIndex > defaultMaterialList.Length)
+        if(player.materialIndex < defaultMaterialList.Length)
             return defaultMaterialList[player.materialIndex];
         else
             return player.importedImages[player.materialIndex - defaultMaterialList.Length];
+    }
+
+    public Material GetMaterialByIndex(int index)
+    {
+        if(index < defaultMaterialList.Length)
+            return defaultMaterialList[index];
+        else
+            return player.importedImages[index - defaultMaterialList.Length];
     }
 
     
