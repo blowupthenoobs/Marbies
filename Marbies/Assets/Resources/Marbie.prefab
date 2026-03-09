@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6974324257014744108}
   - component: {fileID: 8890454809476756506}
   - component: {fileID: 6461458969673619806}
+  - component: {fileID: -366330911214053646}
   - component: {fileID: 6791084447197719036}
   m_Layer: 0
   m_Name: Marbie
@@ -171,10 +172,27 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: -366330911214053646}
   - {fileID: 6791084447197719036}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-366330911214053646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099488044139965307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!114 &6791084447197719036
 MonoBehaviour:
   m_ObjectHideFlags: 0
