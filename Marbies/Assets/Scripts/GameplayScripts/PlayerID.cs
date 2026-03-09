@@ -23,7 +23,6 @@ public class PlayerID : ScriptableObject
         
         if(player == null)
         {
-            Debug.Log("running");
             if(ES3.KeyExists("account"))
                 player = ES3.Load<Account>("account");
             else

@@ -22,9 +22,13 @@ public class PickupableScript : MonoBehaviour
     float[] placeholderAnimSpeed = {30, 15, 30};
     [SerializeField] float pushDist = 2;
 
+    private bool ranAwake;
+
 
     void Awake()
     {
+        ranAwake = true;
+        
         if(animSpeed.Length == 0)
             animSpeed = placeholderAnimSpeed;
 
@@ -40,6 +44,9 @@ public class PickupableScript : MonoBehaviour
 
     void Update()
     {
+        if(!ranAwake)
+            Awake();
+        
         if(Collector == null)
         {
             transform.position = Vector3.MoveTowards(transform.position, movementPoints[movementIndex], currentBobbingSpeed * Time.deltaTime);

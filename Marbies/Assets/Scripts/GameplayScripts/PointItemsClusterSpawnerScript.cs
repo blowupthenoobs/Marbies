@@ -6,12 +6,10 @@ using Photon.Pun;
 public class PointItemsClusterSpawnerScript : MonoBehaviour
 {
     [SerializeField] Transform[] spawnPoints;
-    [SerializeField] GameObject[] pointPickupSpot;
-    [SerializeField] int minPointSpawns;
-    [SerializeField] int maxPointSpawns;
+    [SerializeField] GameObject[] pointPickupItem;
 
     public static List<GameObject> players = new List<GameObject>();
-    public float closestPlayerDist;
+    [HideInInspector] public float closestPlayerDist;
 
     void Update()
     {
@@ -32,7 +30,7 @@ public class PointItemsClusterSpawnerScript : MonoBehaviour
         for(int i = 0; i < itemToSpawn; i++)
         {
             int index = Random.Range(0, currentSpawns.Count);
-            PhotonNetwork.Instantiate(pointPickupSpot[Random.Range(0, pointPickupSpot.Length)].name, currentSpawns[index].position, Quaternion.identity);
+            PhotonNetwork.Instantiate(pointPickupItem[Random.Range(0, pointPickupItem.Length)].name, currentSpawns[index].position, Quaternion.identity);
             currentSpawns.RemoveAt(index);
         }
     }
