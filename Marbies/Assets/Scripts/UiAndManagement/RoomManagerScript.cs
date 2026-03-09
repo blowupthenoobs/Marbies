@@ -9,6 +9,7 @@ using System.Linq;
 using UnityEngine.UIElements.Experimental;
 using System;
 using TMPro;
+using ExitGames.Client.Photon.StructWrapping;
 
 
 public class RoomManagerScript : MonoBehaviourPunCallbacks
@@ -33,7 +34,8 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     private Dictionary<int, GameObject> scoreTracker = new Dictionary<int, GameObject>();
 
     //Gameplay Stuff
-    [SerializeField] GameObject pickableObject;
+    [SerializeField] GameObject[] pointSpawnerCluster;
+    [SerializeField] GameObject rocketPowerUp;
 
     public float deathCutoffHeight;
     public Dictionary<int, int> playerScores = new Dictionary<int, int>();
@@ -60,9 +62,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
 
             if(isHost)
             {
-                Invoke("SpawnCollectables", 5);
-                Invoke("SpawnCollectables", 5);
-                Invoke("SpawnCollectables", 5);
+                Invoke("SpawnPointPickups", 5);
             }
 
             // PlayerID.Instance.player.materialIndex = UnityEngine.Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length);
@@ -129,10 +129,23 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         PlayerCamera.GetComponent<PlayerCameraScript>().player = player;
     }
 
-    public void SpawnCollectables()
+    public void SpawnPointPickups()
     {
-        //using temp code atm
-        PhotonNetwork.Instantiate(pickableObject.name, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+        if(isHost)
+        {
+            GameObject selected = null;
+            float currentMaxDist = 0;
+            foreach(GameObject spawner in pointSpawnerCluster)
+            {
+                if(currentMaxDist < spawner.GetComponent<PointItemsClusterSpawnerScript>().closestPlayerDist)
+                {
+                    currentMaxDist = spawner.GetComponent<PointItemsClusterSpawnerScript>().closestPlayerDist;
+                    selected = spawner;
+                }
+            }
+            
+            selected.SendMessage("SpawnPickups");
+        }
     }
 
     private string GetUniqueUsername()

@@ -13,13 +13,24 @@ public class PlayerMarbleScript : MonoBehaviour
     private Vector2 moveInputs;
     public InputActionAsset inputs;
     private InputAction movementInputs;
+    private InputAction itemUseInput;
+    private bool itemUsedThisPress;
 
     private GameObject lastPlayerCollision;
+
+    private int heldPower;
+
+    [Header("PowerUpVarss")]
+    [SerializeField] float rocketPower;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         movementInputs = inputs.FindAction("Move");
+        itemUseInput = inputs.FindAction("UseItem");
+
+        PowerContainerScript.Instance.SetPowerUpImage(heldPower);
+        PointItemsClusterSpawnerScript.players.Add(gameObject);
     }
 
     public void GetPlayerData(PlayerID newData)
@@ -42,12 +53,7 @@ public class PlayerMarbleScript : MonoBehaviour
         {
             moveInputs = movementInputs.ReadValue<Vector2>();
 
-            var moveDirection = new Vector3();
-
-            moveDirection.x = moveInputs.x * Mathf.Sin((playerID.yRotation + 90)  * Mathf.Deg2Rad) + moveInputs.y * Mathf.Sin(playerID.yRotation  * Mathf.Deg2Rad);
-            moveDirection.z = moveInputs.x * Mathf.Cos((playerID.yRotation + 90)  * Mathf.Deg2Rad) + moveInputs.y * Mathf.Cos(playerID.yRotation  * Mathf.Deg2Rad);
-
-            moveDirection.Normalize();
+            var moveDirection = GetMoveDirection();
 
             rb.AddForce(moveDirection, ForceMode.Acceleration);
 
@@ -55,11 +61,19 @@ public class PlayerMarbleScript : MonoBehaviour
             {
                 lastPlayerCollision?.GetComponent<PhotonView>().RPC("OnPlayerKill", RpcTarget.Others);
                 RoomManagerScript.Instance.SpawnPlayer();
-                Destroy(gameObject);
+                KillPlayer();
             }
+
+            if(itemUseInput.IsPressed() && !itemUsedThisPress)
+            {
+                itemUsedThisPress = true;  
+                UsePower();
+            }
+            else if(!itemUseInput.IsPressed())
+                itemUsedThisPress = false;
         }
         else if(transform.position.y < RoomManagerScript.Instance.deathCutoffHeight)
-            Destroy(gameObject);
+            KillPlayer();
     }
 
     [PunRPC]
@@ -83,6 +97,12 @@ public class PlayerMarbleScript : MonoBehaviour
             Debug.Log("KilledPlayer");
     }
 
+    private void KillPlayer()
+    {
+        PointItemsClusterSpawnerScript.players.Remove(gameObject);
+        Destroy(gameObject);
+    }
+
     [PunRPC]
     public void GetCollisionForce(Vector3 impactForce)
     {
@@ -95,6 +115,7 @@ public class PlayerMarbleScript : MonoBehaviour
         {    
             collision.gameObject.GetComponent<PhotonView>().RPC("GetCollisionForce", RpcTarget.All, rb.velocity);
             lastPlayerCollision = collision.gameObject;
+            StartCoroutine("EndKillClaim");
         }
     }
 
@@ -103,4 +124,65 @@ public class PlayerMarbleScript : MonoBehaviour
         yield return new WaitForSeconds(10f);
         lastPlayerCollision = null;
     }
+
+    public Vector3 GetMoveDirection()
+    {
+        var moveDirection = new Vector3();
+
+        moveDirection.x = moveInputs.x * Mathf.Sin((playerID.yRotation + 90)  * Mathf.Deg2Rad) + moveInputs.y * Mathf.Sin(playerID.yRotation  * Mathf.Deg2Rad);
+        moveDirection.z = moveInputs.x * Mathf.Cos((playerID.yRotation + 90)  * Mathf.Deg2Rad) + moveInputs.y * Mathf.Cos(playerID.yRotation  * Mathf.Deg2Rad);
+
+        moveDirection.Normalize();
+
+        return moveDirection;
+    }
+
+    public Vector3 GetForwardDirection()
+    {
+        var direction = new Vector3();
+
+        direction.x = Mathf.Sin(playerID.yRotation  * Mathf.Deg2Rad);
+        direction.z = Mathf.Cos(playerID.yRotation  * Mathf.Deg2Rad);
+
+        direction.Normalize();
+
+        return direction;
+    }
+
+#region PowerUps
+    public void PickupPower(object power)
+    {
+        heldPower = (int)power;
+        PowerContainerScript.Instance.SetPowerUpImage(heldPower);
+    }
+
+    public void UsePower()
+    {
+        switch(heldPower)
+        {
+            case 0:
+                break;
+            case 1:
+                UseRocket();
+                break;
+            case 2:
+                UseGrowthThing();
+                break;
+            default:
+                Debug.Log(("no power set for: ", heldPower.ToString()));
+                break;
+        }
+    }
+
+    private void UseRocket()
+    {
+        rb.AddForce(GetForwardDirection() * rocketPower, ForceMode.Impulse);
+    }
+
+    private void UseGrowthThing()
+    {
+        
+    }
+
+#endregion PowerUps
 }

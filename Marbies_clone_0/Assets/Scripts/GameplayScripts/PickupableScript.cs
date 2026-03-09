@@ -19,11 +19,15 @@ public class PickupableScript : MonoBehaviour
 
     [Header("PickUp Anim Variables")]
     [SerializeField] float[] animSpeed;
+    float[] placeholderAnimSpeed = {30, 15, 30};
     [SerializeField] float pushDist = 2;
 
 
     void Awake()
     {
+        if(animSpeed.Length == 0)
+            animSpeed = placeholderAnimSpeed;
+
         hitbox = gameObject.GetComponent<Collider>();    
 
         currentBobbingSpeed = Random.Range(minBobSpeed, maxBobSpeed);

@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+
+public class PointItemsClusterSpawnerScript : MonoBehaviour
+{
+    [SerializeField] Transform[] spawnPoints;
+    [SerializeField] GameObject[] pointPickupSpot;
+    [SerializeField] int minPointSpawns;
+    [SerializeField] int maxPointSpawns;
+
+    public static List<GameObject> players = new List<GameObject>();
+    public float closestPlayerDist;
+
+    void Update()
+    {
+        closestPlayerDist = (players[0].transform.position - transform.position).magnitude;
+        for(int i = 1; i < players.Count; i++)
+        {
+            if((players[i].transform.position - transform.position).magnitude < closestPlayerDist)
+                closestPlayerDist = (players[i].transform.position - transform.position).magnitude;
+        }
+    }
+
+
+
+    public void SpawnPickups()
+    {
+        List<Transform> currentSpawns = new List<Transform>(spawnPoints);
+        int itemToSpawn = Random.Range((int)(spawnPoints.Length * .5), spawnPoints.Length);
+        for(int i = 0; i < itemToSpawn; i++)
+        {
+            int index = Random.Range(0, currentSpawns.Count);
+            PhotonNetwork.Instantiate(pointPickupSpot[Random.Range(0, pointPickupSpot.Length)].name, currentSpawns[index].position, Quaternion.identity);
+            currentSpawns.RemoveAt(index);
+        }
+    }
+}

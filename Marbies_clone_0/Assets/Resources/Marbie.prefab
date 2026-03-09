@@ -151,6 +151,7 @@ MonoBehaviour:
   NameTag: {fileID: 3534909624621797644, guid: bfa066ec289d85548908fea497cebac4, type: 3}
   playerID: {fileID: 0}
   inputs: {fileID: -944628639613478452, guid: ff1b4385aa1f0024f97aa708798b118b, type: 3}
+  rocketPower: 100
 --- !u!114 &6461458969673619806
 MonoBehaviour:
   m_ObjectHideFlags: 0
