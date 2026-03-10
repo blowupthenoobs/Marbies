@@ -23,4 +23,13 @@ public class ScoringObjectScript : PickupableScript
         if(currentObjectCount == 0)
             RoomManagerScript.Instance.Invoke("SpawnPointPickups", 5);
     }
+
+    public override void OnCollectorDeath()
+    {
+        currentObjectCount--;
+        
+        if(currentObjectCount == 0)
+            RoomManagerScript.Instance.Invoke("SpawnPointPickups", 5);
+        Destroy(gameObject);
+    }
 }

@@ -16,6 +16,7 @@ public class PickupableScript : MonoBehaviour
     protected Collider hitbox;
 
     protected GameObject Collector;
+    protected bool pickedUp;
 
     [Header("PickUp Anim Variables")]
     [SerializeField] float[] animSpeed;
@@ -42,6 +43,9 @@ public class PickupableScript : MonoBehaviour
     {
         if(Collector == null)
         {
+            if(pickedUp == true)
+                OnCollectorDeath();
+
             transform.position = Vector3.MoveTowards(transform.position, movementPoints[movementIndex], currentBobbingSpeed * Time.deltaTime);
 
             if(transform.position == movementPoints[movementIndex])
@@ -96,9 +100,15 @@ public class PickupableScript : MonoBehaviour
         Debug.Log("Play particles");
     }
 
+    public virtual void OnCollectorDeath()
+    {
+        Debug.Log("collector died");
+    }
+
     protected void PlayPickUpAnimation(GameObject claimer)
     {
         Collector = claimer;
+        pickedUp = true;
         movementPoints.Clear();
         hitbox.enabled = false;
 

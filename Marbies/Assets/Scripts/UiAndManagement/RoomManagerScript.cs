@@ -40,7 +40,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     public float deathCutoffHeight;
     public Dictionary<int, int> playerScores = new Dictionary<int, int>();
     [SerializeField] TMP_Text timerDisplay;
-    public float gameTimer = 600;
+    public float gameTimer = 90; //was originally 600, probably a good idea to make it lower
 
     private void Awake()
     {
@@ -82,6 +82,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         else
             timerDisplay.text = minutes + ":0" + seconds;
 
+        EndGame();
     }
 
     [PunRPC]
@@ -146,6 +147,11 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
 
             selected.SendMessage("SpawnPickups");
         }
+    }
+
+    public void EndGame()
+    {
+        
     }
 
     private string GetUniqueUsername()
