@@ -154,6 +154,7 @@ Transform:
   m_Children:
   - {fileID: 809269868}
   - {fileID: 2002647725}
+  - {fileID: 1936547554}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &11767653
@@ -367,6 +368,7 @@ MonoBehaviour:
   - {fileID: 1155159693}
   - {fileID: 157312729}
   inputs: {fileID: -944628639613478452, guid: ff1b4385aa1f0024f97aa708798b118b, type: 3}
+  isHost: 0
   ScoresContainer: {fileID: 1612548994}
   scoreTrackerPrefab: {fileID: 8438849858951833767, guid: 5e00e572f52431c46a7b8a7a6faa74b3, type: 3}
   pointSpawnerCluster:
@@ -2495,6 +2497,53 @@ MonoBehaviour:
   rocket: {fileID: 21300000, guid: 7bb8ba822d99c4c4386188d27a278214, type: 3}
   growthThing: {fileID: 21300000, guid: 5546a0e23f1f5b246b078d4d3fe6ea80, type: 3}
   powerIcon: {fileID: 810425875}
+--- !u!1 &1936547553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1936547554}
+  - component: {fileID: 1936547555}
+  m_Layer: 0
+  m_Name: PowerSpawner0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1936547554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936547553}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 46.1, y: 8.31, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6024006}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1936547555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936547553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dea4a249b68145c44957d7a3b4ab5303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUp: {fileID: 844191936430484029, guid: d1da8f6cd73c49542b7b093e27400d69, type: 3}
+  minCooldown: 2
+  maxCoolDown: 5
 --- !u!1 &1999350567
 GameObject:
   m_ObjectHideFlags: 0

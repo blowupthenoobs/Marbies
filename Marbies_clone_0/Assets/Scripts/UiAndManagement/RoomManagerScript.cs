@@ -25,7 +25,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     [SerializeField] Transform[] spawnPoints;
     public InputActionAsset inputs;
 
-    private bool isHost;
+    [HideInInspector] public bool isHost;
     private List<string> usedNames = new List<string>();
 
     //UI controls
@@ -143,7 +143,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
                     selected = spawner;
                 }
             }
-            
+
             selected.SendMessage("SpawnPickups");
         }
     }
