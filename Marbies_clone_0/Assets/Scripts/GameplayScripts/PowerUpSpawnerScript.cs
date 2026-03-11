@@ -30,8 +30,12 @@ public class PowerUpSpawnerScript : MonoBehaviour
 
     public void SpawnPower()
     {
-        spawnedPower = PhotonNetwork.Instantiate(powerUp.name, transform.position, Quaternion.identity);
-        elapsedCooldown = 0;
-        currentCooldown = (float)(Random.Range(minCooldown * 100, maxCoolDown * 100) * .01);
+        if(RoomManagerScript.Instance.isHost)
+        {
+            spawnedPower = PhotonNetwork.Instantiate(powerUp.name, transform.position, Quaternion.identity);
+            elapsedCooldown = 0;
+            currentCooldown = (float)(Random.Range(minCooldown * 100, maxCoolDown * 100) * .01);
+        }
+        
     }
 }

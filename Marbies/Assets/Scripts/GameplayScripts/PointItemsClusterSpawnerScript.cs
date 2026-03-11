@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class PointItemsClusterSpawnerScript : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class PointItemsClusterSpawnerScript : MonoBehaviour
         closestPlayerDist = (players[0].transform.position - transform.position).magnitude;
         for(int i = 1; i < players.Count; i++)
         {
+            if(players[i] == null)
+            {
+                players.RemoveAt(i);
+                i--;    
+            }
             if((players[i].transform.position - transform.position).magnitude < closestPlayerDist)
                 closestPlayerDist = (players[i].transform.position - transform.position).magnitude;
         }

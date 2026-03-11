@@ -12,10 +12,10 @@ public class NametagHoverScript : MonoBehaviour
     {
         if(target != null)
             transform.position = target.transform.position;
-        transform.LookAt(Camera.main.transform.position);
-
-        if(transform.position.y < RoomManagerScript.Instance.deathCutoffHeight)
+        else
             Destroy(gameObject);
+        
+        transform.LookAt(Camera.main.transform.position);
     }
 
     public void ChangeNametag(string newText)

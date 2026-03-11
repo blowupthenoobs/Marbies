@@ -155,6 +155,19 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         }
     }
 
+    public void LeaveGame()
+    {
+        PhotonView.Get(this).RPC("RemoveDesertingPlayer", RpcTarget.OthersBuffered, NetworkingManagerScript.Instance.playerIndex);
+    }
+
+    [PunRPC]
+    public void RemoveDesertingPlayer(int playerIndex)
+    {
+        Destroy(scoreTracker[playerIndex]);
+        scoreTracker.Remove(playerIndex);
+        playerScores.Remove(playerIndex);
+    }
+
     [PunRPC]
     public void EndGame()
     {
@@ -180,6 +193,11 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     {
         EndGameScreen.SetActive(false);
         GameUi.SetActive(true);
+    }
+
+    void OnApplicationQuit()
+    {
+        LeaveGame();
     }
 
     private string GetUniqueUsername()
