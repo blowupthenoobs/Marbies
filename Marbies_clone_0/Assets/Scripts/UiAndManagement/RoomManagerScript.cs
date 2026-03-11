@@ -172,6 +172,8 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         
         GameUi.SetActive(false);
         EndGameScreen.SetActive(true);
+
+        PlayerCamera.SendMessage("OpenUI");
     }
 
     private void SetNormalGameUI()

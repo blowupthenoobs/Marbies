@@ -176,6 +176,7 @@ public class PlayerMarbleScript : MonoBehaviour
     private void UseRocket()
     {
         rb.AddForce(GetForwardDirection() * rocketPower, ForceMode.Impulse);
+        heldPower = 0;
     }
 
     private void UseGrowthThing()
