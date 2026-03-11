@@ -15,4 +15,10 @@ public class PowerItemScript : PickupableScript
         Destroy(gameObject);
         PhotonView.Get(this).RPC("AllClientPickUpEffect", RpcTarget.All);
     }
+
+    
+    public override void OnCollectorDeath()
+    {
+        Destroy(gameObject);
+    }
 }

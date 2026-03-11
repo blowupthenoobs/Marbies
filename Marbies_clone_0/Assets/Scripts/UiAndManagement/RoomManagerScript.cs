@@ -16,11 +16,9 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
 {
     public static RoomManagerScript Instance;
 
-    //Basic player variables
-    public Material[] defaultMaterialList;
+    [Header("Basic player variables")]
     [SerializeField] GameObject marbiePrefab;
     [SerializeField] GameObject PlayerCamera;
-    [SerializeField] PlayerID playerID;
 
     [SerializeField] Transform[] spawnPoints;
     public InputActionAsset inputs;
@@ -28,22 +26,31 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     [HideInInspector] public bool isHost;
     private List<string> usedNames = new List<string>();
 
-    //UI controls
+    [Header("UI Menus")]
+    [SerializeField] GameObject GameUi;
+    [SerializeField] GameObject EndGameScreen;
+
+    [Header("UI controls")]
     [SerializeField] GameObject ScoresContainer;
     [SerializeField] GameObject scoreTrackerPrefab;
     private Dictionary<int, GameObject> scoreTracker = new Dictionary<int, GameObject>();
-
-    //Gameplay Stuff
-    [SerializeField] GameObject[] pointSpawnerCluster;
-    [SerializeField] GameObject rocketPowerUp;
-
-    public float deathCutoffHeight;
     public Dictionary<int, int> playerScores = new Dictionary<int, int>();
     [SerializeField] TMP_Text timerDisplay;
+    [SerializeField] GameObject FinalScoreDisplaysContainer;
+    [SerializeField] GameObject FinalScoringDisplayPrefab;
+
+    [Header("Gameplay Stuff")]
+    [SerializeField] GameObject[] pointSpawnerCluster;
+
+    public float deathCutoffHeight;
     public float gameTimer = 90; //was originally 600, probably a good idea to make it lower
+
+    private bool gameEnded = false;
 
     private void Awake()
     {
+        Time.timeScale = 1;
+
         if(!PhotonNetwork.IsConnectedAndReady)
             SceneManager.LoadScene(0);
         else
@@ -65,10 +72,8 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
                 Invoke("SpawnPointPickups", 5);
             }
 
-            // PlayerID.Instance.player.materialIndex = UnityEngine.Random.Range(0, RoomManagerScript.Instance.defaultMaterialList.Length);
-
+            SetNormalGameUI();
         }
-
     }
 
     void Update()
@@ -81,8 +86,9 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
             timerDisplay.text = minutes + ":" + seconds;
         else
             timerDisplay.text = minutes + ":0" + seconds;
-
-        EndGame();
+        
+        if(isHost && gameTimer <= 0 && !gameEnded)
+            PhotonView.Get(this).RPC("EndGame", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -149,9 +155,29 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
     public void EndGame()
     {
+        gameEnded = true;
+        Time.timeScale = 0;
+
+        for(int i = 0; i < ScoresContainer.transform.childCount; i++)
+        {
+            var variables = ScoresContainer.transform.GetChild(i).GetComponent<ScoreDisplayerScript>();
+            var tracker = Instantiate(FinalScoringDisplayPrefab, FinalScoreDisplaysContainer.transform.position, Quaternion.identity);
+            tracker.GetComponent<FinalScoreDisplayScript>().InitializeDisplay((i + 1).ToString(), variables.playerName.text, variables.playerScore.text);
+            tracker.transform.SetParent(FinalScoreDisplaysContainer.transform);
+        }
+
         
+        GameUi.SetActive(false);
+        EndGameScreen.SetActive(true);
+    }
+
+    private void SetNormalGameUI()
+    {
+        EndGameScreen.SetActive(false);
+        GameUi.SetActive(true);
     }
 
     private string GetUniqueUsername()

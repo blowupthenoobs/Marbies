@@ -43,7 +43,6 @@ public class PlayerMarbleScript : MonoBehaviour
     public void ScorePoints()
     {
         PhotonView.Get(RoomManagerScript.Instance).RPC("EditScore", RpcTarget.All, NetworkingManagerScript.Instance.playerIndex, 1);
-        // Debug.Log("Gained Points");
     }
 
     // Update is called once per frame
@@ -87,7 +86,7 @@ public class PlayerMarbleScript : MonoBehaviour
     [PunRPC]
     public void SetMarbleMaterial(int index)
     {
-        gameObject.GetComponent<Renderer>().material = RoomManagerScript.Instance.defaultMaterialList[index];
+        gameObject.GetComponent<Renderer>().material = PlayerID.Instance.defaultMaterialList[index];
     }
 
     [PunRPC]

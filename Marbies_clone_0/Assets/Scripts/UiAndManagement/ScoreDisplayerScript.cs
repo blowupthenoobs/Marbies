@@ -7,8 +7,8 @@ using TMPro;
 public class ScoreDisplayerScript : MonoBehaviour
 {
     public int playerIndex;
-    [SerializeField] TMP_Text playerName;
-    [SerializeField] TMP_Text playerScore;
+    public TMP_Text playerName;
+    public TMP_Text playerScore;
 
     public void Initialize(int index, string name, int startingScore)
     {
